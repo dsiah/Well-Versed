@@ -62,17 +62,10 @@ const Main = React.createClass({
     // Most likely will be embedded in the Component Will Mount function
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
       console.log(tabs[0].title);
-      request.post({
-          url:'http://service.com/upload', 
-          form: {
-            key: 'value'
-          }
-        }, 
-        function(err, httpResponse, body){ 
-          if (err) 
-            return err;
-
-          console.log(httpResponse, body);
+      let val = tabs[0].title;
+      
+      $.post('http://104.209.136.192:8080/summarize', { str: val }, function(data) {
+        console.log(data);
       })
     });
   }
