@@ -1,5 +1,6 @@
 /** In this file, we create a React component which incorporates components provided by material-ui */
-
+const $ = require('jquery');
+const request = require('request');
 const React = require('react');
 const RaisedButton = require('material-ui/lib/raised-button');
 const Dialog = require('material-ui/lib/dialog');
@@ -37,7 +38,6 @@ const Main = React.createClass({
 
     let containerStyle = {
       textAlign: 'center',
-      paddingTop: '200px'
     };
 
     let standardActions = [
@@ -46,15 +46,8 @@ const Main = React.createClass({
 
     return (
       <div style={containerStyle}>
-        <h1>material-ui</h1>
+        <h1>Well Versed</h1>
         <h2>example project</h2>
-        
-        <Dialog
-          title="Super Secret Password"
-          actions={standardActions}
-          ref="superSecretPasswordDialog">
-          1-2-3-4-5
-        </Dialog>
 
         <RaisedButton label="Super Secret Password" primary={true} 
         onTouchTap={this._handleTouchTap} />
@@ -64,7 +57,24 @@ const Main = React.createClass({
   },
 
   _handleTouchTap() {
-    this.refs.superSecretPasswordDialog.show();
+
+    // This is the logic we need to fire at the startup
+    // Most likely will be embedded in the Component Will Mount function
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+      console.log(tabs[0].title);
+      request.post({
+          url:'http://service.com/upload', 
+          form: {
+            key: 'value'
+          }
+        }, 
+        function(err, httpResponse, body){ 
+          if (err) 
+            return err;
+
+          console.log(httpResponse, body);
+      })
+    });
   }
 
 });
