@@ -1,5 +1,5 @@
 {
-  "name": "Well Versed",
+  "name": "well_versed",
   "version": "0.0.0",
   "description": "",
   "repository": {
@@ -23,6 +23,7 @@
     "watchify": "^2.2.1"
   },
   "dependencies": {
+    "jquery": "^2.1.4",
     "material-ui": ">=0.8",
     "react": ">=0.13",
     "react-tap-event-plugin": "^0.1.3"

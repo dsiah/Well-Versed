@@ -8,6 +8,11 @@
    "default_popup": "app.html"
   },
   
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+
   "permissions": [
    "activeTab"
   ]
