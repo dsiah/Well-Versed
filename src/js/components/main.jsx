@@ -49,8 +49,8 @@ const Main = React.createClass({
       var firstkey = Object.keys(data['well-versed'])[0];
       var title  = data['well-versed'][firstkey].origTitle;
       var news_cont = data['well-versed'][firstkey].news;
-      
-      thus.setState({news: news_cont, muiTheme: newMuiTheme, title: title})
+      var wiki  = data['well-versed'][firstkey].wiki;
+      thus.setState({news: news_cont, muiTheme: newMuiTheme, title: title, wiki: wiki})
     });
   },
 
@@ -89,7 +89,10 @@ const Main = React.createClass({
           </CardMedia>
           <CardText expandable={true}>
             <b> {this.state['title']} </b>
-            
+            <br/>
+            {
+              !(this.state['wiki'] == "Error\n") ?  this.state['wiki'] : ''
+            }
           </CardText>
         </Card>
         
