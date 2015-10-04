@@ -45,10 +45,12 @@ const Main = React.createClass({
     var thus = this;
 
     chrome.storage.sync.get('well-versed', function(data) {
-      var n_data = JSON.parse(data['well-versed']);
-      var news_cont = n_data[Object.keys(n_data)[0]];
-      debugger;
-      thus.setState({news: news_cont.news, muiTheme: newMuiTheme})
+
+      var firstkey = Object.keys(data['well-versed'])[0];
+      var title  = data['well-versed'][firstkey].origTitle;
+      var news_cont = data['well-versed'][firstkey].news;
+      
+      thus.setState({news: news_cont, muiTheme: newMuiTheme, title: title})
     });
   },
 
@@ -86,7 +88,8 @@ const Main = React.createClass({
             <img src="http://lorempixel.com/600/337/nature/"/>
           </CardMedia>
           <CardText expandable={true}>
-            {this.state['title']}
+            <b> {this.state['title']} </b>
+            
           </CardText>
         </Card>
         
