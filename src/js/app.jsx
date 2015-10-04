@@ -3,6 +3,26 @@
   let injectTapEventPlugin = require('react-tap-event-plugin');
   let Main = require('./components/main.jsx'); // Our custom react component
 
+  var WebFontConfig = {
+      google: { families: [ 'Roboto:400,300,500:latin' ] }
+    };
+/*
+  (function() {
+    var wf = document.createElement('script');
+    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+    '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+    wf.type = 'text/javascript';
+    wf.async = 'true';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(wf, s);
+  })();
+*/
+  chrome.tabs.onUpdated.addListener(function(tabId , info) {
+    if (info.status == "complete") {
+        console.log(tabId, info);
+    }
+  });
+
   //Needed for React Developer Tools
   window.React = React;
 
