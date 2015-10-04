@@ -24,6 +24,7 @@ app.post('/summarize', function(req, res) {
         if(err) {
             return console.warn('ERROR: ' + err);
         } else {
+            data[Object.keys(data)[0]]['origTitle'] = body;
             data = JSON.stringify(data);
             console.log('Final Summary = ' + data);
             return(res.end(data));
@@ -45,15 +46,19 @@ app.post('/summarize', function(req, res) {
             if(error) {
                 console.warn(fun(error));
             } else {
-                namedEntities(JSON.parse(body)['KeyPhrases'], fun);
+                var keyPhrases = JSON.parse(body)['KeyPhrases'];
+                console.log('Key phrases = ' + keyPhrases);
+                news(keyPhrases, fun);
             }
         });
     }
 
+/*
     function namedEntities(text, fun) {
         indico.namedEntities(text)
           .then(function(result) {
-              result = result[0];
+              console.log('Named entity recog = ' + JSON.stringify(result));
+              result = result.filter(function(map) { return Object.keys(map).length; })[0];
               Object.keys(result).forEach(function(key) {
                   var oldVal = result[key];
                   result[key] = {'namedEntitities': oldVal};
@@ -63,13 +68,18 @@ app.post('/summarize', function(req, res) {
               fun(console.warn(err));
           });
     }
+*/
 
-    function newsFromNamedEntities(namedEntities, fun) {
+    function news(namedEntities, fun) {
+        var newKey = "";
         // Hacky way to construct URL
         var hackedUrl = 'https://api.datamarket.azure.com/Bing/Search/v1/News?' + "Query=" + "%27";
-        Object.keys(namedEntities).forEach(function(entity) {
+        namedEntities = namedEntities.filter(function(name) { return name[0] == name[0].toUpperCase() }).slice(0, 4);
+        namedEntities.forEach(function(entity) {
+            newKey += entity + ' ';
             hackedUrl += entity + '%27';
         });
+        console.log('new key = ' + newKey);
         hackedUrl += '&$format=json';
         console.log('URL = ' + hackedUrl);
         request({
@@ -84,6 +94,7 @@ app.post('/summarize', function(req, res) {
                 console.warn(fun(error));
             } else {
                 body = JSON.parse(body);
+                console.log('body = ' + JSON.stringify(body));
                 var newsArticles = [];
                 body['d']['results'].forEach(function(metadata) {
                     var pruned = {};
@@ -91,8 +102,12 @@ app.post('/summarize', function(req, res) {
                     pruned['Url'] = metadata['Url'];
                     newsArticles.push(pruned);
                 });
-                namedEntities['news'] = newsArticles;
-                summaryFromWiki(namedEntities, fun);
+                console.log('news = ' + newsArticles);
+                // namedEntities[newKey]['news'] = newsArticles;
+                var summary = {};
+                summary[newKey] = {'news': newsArticles};
+                console.log("Current summary = " + JSON.stringify(summary))
+                summaryFromWiki(summary, fun);
             }
         });
     }
@@ -100,6 +115,7 @@ app.post('/summarize', function(req, res) {
     function summaryFromWiki(summary, fun) {
         keys = [];
         Object.keys(summary).forEach(function(x) {keys.push(x)});
+        console.log('keys = ' + keys);
         keys.forEach(function(key) {
             var python = require('child_process').spawn(
                  'python',
@@ -114,7 +130,6 @@ app.post('/summarize', function(req, res) {
                 if (code !== 0) {  return fun(code) }
                 console.log('output = ' + output);
                 summary[key]['wiki'] = output;
-                console.log('summary = ' + JSON.stringify(summary));
                 return fun(null, summary);
             });
         });
