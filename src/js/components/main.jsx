@@ -10,6 +10,14 @@ const ThemeManager = require('material-ui/lib/styles/theme-manager');
 const LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme');
 const Colors = require('material-ui/lib/styles/colors');
 const Paper = require('material-ui/lib/paper');
+const Card = require('material-ui/lib/card/card');
+const CardHeader = require('material-ui/lib/card/card-header');
+const CardMedia = require('material-ui/lib/card/card-media');
+const CardTitle = require('material-ui/lib/card/card-title');
+const CardText = require('material-ui/lib/card/card-text');
+const CardActions = require('material-ui/lib/card/card-actions');
+const FlatButton = require('material-ui/lib/flat-button');
+const Avatar = require('material-ui/lib/avatar');
 
 const Main = React.createClass({
 
@@ -55,26 +63,45 @@ const Main = React.createClass({
       { text: 'Okay' }
     ];
 
+    let roundStyle = {
+      float: 'left'
+    }
+
+    let rectStyle = {
+      float: 'right',
+      width: '100px'
+    }
+
     return (
       <div style={containerStyle}>
-        <h1>Well Versed</h1>
-
-        <img className="picture" src={this.state.imageUrl} />
-
-        <Paper zDepth={1} className="bio">
-          <h3>{this.state.query}</h3>
-          <p>{this.state.blurb}</p>
-        </Paper>
-
-        <List zDepth={1} className="news-list" subheader="Related News"> 
-          <Divider />
-          <ListItem primaryText="News Item 1"></ListItem>
-          <Divider />
-          <ListItem primaryText="News Item 2"></ListItem>
-          <Divider />
-          <ListItem primaryText="News Item 3"></ListItem>
-        </List>
-
+        <Card initiallyExpanded={true}>
+          <CardHeader
+            title="Demo Url Based Avatar"
+            subtitle="Subtitle"
+            avatar="http://lorempixel.com/100/100/nature/"
+            showExpandableButton={true}/>
+          <CardMedia 
+          overlay={<CardTitle title="Title" subtitle="Subtitle"/>}
+          expandable={true}>
+            <img src="http://lorempixel.com/600/337/nature/"/>
+          </CardMedia>
+          <CardText expandable={true}>
+            Fill in.
+          </CardText>
+        </Card>
+        <br/>
+        <Card>
+          <CardTitle subtitle="Title"/>
+          <CardText>
+            Fill in.
+          </CardText>
+          <CardText>
+            Fill in.
+          </CardText>
+          <CardText>
+            Fill in.
+          </CardText>
+        </Card>
       </div>
     );
   },

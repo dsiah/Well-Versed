@@ -3,7 +3,49 @@ html {
 }
 
 body {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 20px;
-  min-width: 300px;
+  min-width: 400px;
+  min-height: 500px;
+}
+
+.query-subject {
+	float: right;
+	width: 60%;
+	min-height: 50px;
+}
+
+.picture {
+	width: 100px;
+	height: 100px;
+	margin-right: 10px;
+	float: left;
+}
+
+.picture > img {
+	margin-top: 7%;
+	margin-bottom: 7%;
+	vertical-align: middle;
+	height: 100px;
+
+}
+
+.bio {
+	width: 60%;
+	margin-left: 10px;
+	float: right;
+	min-height: 100px;
+}
+
+.join-btn {
+	width: 100%;
+}
+
+.news-list {
+	margin-top: 10px;
+	float: left;
+	width: 100%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: lightgrey;
 }
