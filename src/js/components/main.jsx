@@ -42,15 +42,13 @@ const Main = React.createClass({
       accent1Color: Colors.deepOrange500
     });
 
-    this.setState({muiTheme: newMuiTheme});
-    this.setState({
-      query: 'Cached Info Goes Here',
-      imageUrl: 'http://www.gifbin.com/bin/500824yu29.gif',
-      blurb: 'Bruce Flea was a Hong Kong American martial artist,' + 
-      ' Hong Kong action film actor, martial arts instructor, ' +
-      'philosopher, filmmaker, and the founder of Jeet Kune Do. ' + 
-      'Lee was the son of Cantonese opera star Lee Hoi-Chuen.'
-    });
+    var thus = this;
+
+    chrome.storage.sync.get('well-versed', function(data) {
+      var n_data = JSON.parse(data['well-versed']);
+      debugger;
+      thus.setState({news: n_data['news'], muiTheme: newMuiTheme})
+    })
   },
 
   render() {
@@ -72,6 +70,38 @@ const Main = React.createClass({
       width: '100px'
     }
 
+    if (this.state['news']) {
+      debugger;
+      return (
+      <div style={containerStyle}>
+        <Card initiallyExpanded={true}>
+          <CardHeader
+            title="Demo Url Based Avatar"
+            subtitle="Subtitle"
+            avatar="http://lorempixel.com/100/100/nature/"
+            showExpandableButton={true}/>
+          <CardMedia 
+          overlay={<CardTitle title="Title" subtitle="Subtitle"/>}
+          expandable={true}>
+            <img src="http://lorempixel.com/600/337/nature/"/>
+          </CardMedia>
+          <CardText expandable={true}>
+            Fill in.
+          </CardText>
+        </Card>
+        
+        <List zDepth={1} className="news-list" subheader="Related News"> 
+          <Divider />
+          <ListItem primaryText={this.state['news'][0].Title}></ListItem>
+          <Divider />
+          <ListItem primaryText={this.state['news'][1].Title}></ListItem>
+          <Divider />
+          <ListItem primaryText={this.state['news'][2].Title}></ListItem>
+        </List>
+        <button onClick={this.populate}>Try</button>
+      </div>)
+    }
+
     return (
       <div style={containerStyle}>
         <Card initiallyExpanded={true}>
@@ -90,22 +120,17 @@ const Main = React.createClass({
           </CardText>
         </Card>
         
-        
-        <List zDepth={1} className="news-list" subheader="Related News"> 
-          <Divider />
-          <ListItem primaryText="News Item 1"></ListItem>
-          <Divider />
-          <ListItem primaryText="News Item 2"></ListItem>
-          <Divider />
-          <ListItem primaryText="News Item 3"></ListItem>
-        </List>
-        
+        <button onClick={this.populate}>Try</button>
       </div>
     );
   },
 
-  _handleTouchTap() {
-    //
+  populate() {
+    var data = JSON.parse(localStorage.getItem('well-versed'));
+    //console.log(data);
+    chrome.storage.sync.get('well-versed', function(data) {
+      console.log(data);
+    })
   }
 
 });
