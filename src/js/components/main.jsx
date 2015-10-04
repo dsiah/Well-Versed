@@ -44,13 +44,11 @@ const Main = React.createClass({
 
     var thus = this;
 
-    chrome.storage.sync.get('well-versed-title', function(title) {
-      thus.setState({title: title});
-    });
-
     chrome.storage.sync.get('well-versed', function(data) {
       var n_data = JSON.parse(data['well-versed']);
-      thus.setState({news: n_data['news'], muiTheme: newMuiTheme})
+      var news_cont = n_data[Object.keys(n_data)[0]];
+      debugger;
+      thus.setState({news: news_cont.news, muiTheme: newMuiTheme})
     });
   },
 
@@ -74,7 +72,7 @@ const Main = React.createClass({
     }
 
     if (this.state['news']) {
-      
+      debugger;
       return (
       <div style={containerStyle}>
         <Card initiallyExpanded={true}>
@@ -84,7 +82,6 @@ const Main = React.createClass({
             avatar="logo.png"
             showExpandableButton={true}/>
           <CardMedia 
-          overlay={<CardTitle />}
           expandable={true}>
             <img src="http://lorempixel.com/600/337/nature/"/>
           </CardMedia>

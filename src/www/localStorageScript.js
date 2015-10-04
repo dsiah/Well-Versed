@@ -5,16 +5,9 @@ void 0===c?d&&"get"in d&&null!==(e=d.get(a,b))?e:(e=n.find.attr(a,b),null==e?voi
 
 function hitEndpointAndStore(title, endpoint) {
 	$.post(endpoint, { str: title }, function(data) {
-		// clear localStorage
-		localStorage.setItem('well-versed', null);
-
-		// load localStorage
-		data = JSON.stringify(data);
-		
-		localStorage.setItem('well-versed', data);
 		
 		chrome.storage.sync.set({'well-versed': data, 'well-versed-title': title}, function () {
-        console.log("Just saved", data, title);
+			console.log("Just saved", data, title);
     });
 	});
 }
