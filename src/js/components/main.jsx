@@ -81,7 +81,7 @@ const Main = React.createClass({
             avatar="logo.png"
             showExpandableButton={true}/>
           <CardMedia 
-          overlay={<CardTitle title="Title" subtitle="Subtitle"/>}
+          overlay={<CardTitle title="Title"/>}
           expandable={true}>
             <img src="http://lorempixel.com/600/337/nature/"/>
           </CardMedia>
@@ -104,7 +104,6 @@ const Main = React.createClass({
           onClick={this.transport.bind(this, this.state['news'][2]['Url'])}>
           </ListItem>
         </List>
-        
       </div>)
     }
 
