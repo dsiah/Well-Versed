@@ -92,13 +92,19 @@ const Main = React.createClass({
         
         <List zDepth={1} className="news-list" subheader="Related News"> 
           <Divider />
-          <ListItem primaryText={this.state['news'][0].Title}></ListItem>
+          <ListItem primaryText={this.state['news'][0].Title} id={0} 
+          onClick={this.transport.bind(this, this.state['news'][0]['Url'])}>
+          </ListItem>
           <Divider />
-          <ListItem primaryText={this.state['news'][1].Title}></ListItem>
+          <ListItem primaryText={this.state['news'][1].Title} id={1} 
+          onClick={this.transport.bind(this, this.state['news'][1]['Url'])}>
+          </ListItem>
           <Divider />
-          <ListItem primaryText={this.state['news'][2].Title}></ListItem>
+          <ListItem primaryText={this.state['news'][2].Title} id={2} 
+          onClick={this.transport.bind(this, this.state['news'][2]['Url'])}>
+          </ListItem>
         </List>
-        <button onClick={this.populate}>Try</button>
+        
       </div>)
     }
 
@@ -125,12 +131,10 @@ const Main = React.createClass({
     );
   },
 
-  populate() {
-    var data = JSON.parse(localStorage.getItem('well-versed'));
-    //console.log(data);
-    chrome.storage.sync.get('well-versed', function(data) {
-      console.log(data);
-    })
+  transport(link) {
+    window.href = link;
+    chrome.tabs.create({ url: link });
+    console.log(link);
   }
 
 });
