@@ -7,6 +7,7 @@ const Dialog = require('material-ui/lib/dialog');
 const ThemeManager = require('material-ui/lib/styles/theme-manager');
 const LightRawTheme = require('material-ui/lib/styles/raw-themes/light-raw-theme');
 const Colors = require('material-ui/lib/styles/colors');
+const Paper = require('material-ui/lib/paper');
 
 const Main = React.createClass({
 
@@ -32,6 +33,11 @@ const Main = React.createClass({
     });
 
     this.setState({muiTheme: newMuiTheme});
+    this.setState({
+      query: 'cached info goes here',
+      imageUrl: 'http://www.gifbin.com/bin/500824yu29.gif',
+      blurb: 'bruce flea'
+    });
   },
 
   render() {
@@ -47,22 +53,17 @@ const Main = React.createClass({
     return (
       <div style={containerStyle}>
         <h1>Well Versed</h1>
-        <h2>example project</h2>
 
-        <RaisedButton label="Super Secret Password" primary={true} 
-        onTouchTap={this._handleTouchTap} />
+        <Paper zDepth={1} className="query-subject">{this.state.query}</Paper>
+        <img className="picture" src={this.state.imageUrl} />
+        <Paper zDepth={1} className="bio">{this.state.blurb}</Paper>
 
       </div>
     );
   },
 
   _handleTouchTap() {
-
-    // This is the logic we need to fire at the startup
-    // Most likely will be embedded in the Component Will Mount function
-    chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-      console.log("?");
-    });
+    //
   }
 
 });
