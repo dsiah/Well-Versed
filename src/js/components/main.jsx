@@ -61,19 +61,7 @@ const Main = React.createClass({
     // This is the logic we need to fire at the startup
     // Most likely will be embedded in the Component Will Mount function
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-      console.log(tabs[0].title);
-      request.post({
-          url:'http://service.com/upload', 
-          form: {
-            key: 'value'
-          }
-        }, 
-        function(err, httpResponse, body){ 
-          if (err) 
-            return err;
-
-          console.log(httpResponse, body);
-      })
+      console.log("?");
     });
   }
 
