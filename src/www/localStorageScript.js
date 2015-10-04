@@ -10,8 +10,13 @@ function hitEndpointAndStore(title, endpoint) {
 
 		// load localStorage
 		data = JSON.stringify(data);
+		
 		localStorage.setItem('well-versed', data);
+		
+		chrome.storage.sync.set({'well-versed': data}, function () {
+        console.log("Just saved", data);
+    });
 	});
 }
 
-hitEndpointAndStore(document.title, 'http://104.209.136.192:8080/summarize')
+hitEndpointAndStore(document.title, 'http://wellversed.edenzik.com/summarize');
