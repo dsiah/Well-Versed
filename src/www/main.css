@@ -3,7 +3,7 @@ html {
 }
 
 body {
-  font-size: 12px;
+  font-size: 14px;
   line-height: 20px;
   min-width: 400px;
   min-height: 500px;
@@ -11,7 +11,8 @@ body {
 
 .query-subject {
 	float: right;
-	width: 50%;
+	width: 60%;
+	min-height: 50px;
 }
 
 .picture {
@@ -25,16 +26,26 @@ body {
 	margin-top: 7%;
 	margin-bottom: 7%;
 	vertical-align: middle;
-	height: 80px;
+	height: 100px;
 
 }
 
 .bio {
-	width: 50%;
+	width: 60%;
 	margin-left: 10px;
 	float: right;
+	min-height: 100px;
 }
 
 .join-btn {
 	width: 100%;
+}
+
+.news-list {
+	margin-top: 10px;
+	float: left;
+	width: 100%;
+	border-style: solid;
+	border-width: 1px;
+	border-color: lightgrey;
 }
