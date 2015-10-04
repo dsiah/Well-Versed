@@ -61,12 +61,7 @@ const Main = React.createClass({
     // This is the logic we need to fire at the startup
     // Most likely will be embedded in the Component Will Mount function
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-      console.log(tabs[0].title);
-      let val = tabs[0].title;
-      
-      $.post('http://104.209.136.192:8080/summarize', { str: val }, function(data) {
-        console.log(data);
-      })
+      console.log("?");
     });
   }
 

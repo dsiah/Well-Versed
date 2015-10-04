@@ -14,8 +14,10 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.reddit.com/*"],
-      "js": ["myscript.js"],
+      "matches": ["https://www.reddit.com/*", 
+                  "https://www.youtube.com/*",
+                  "https://www.twitter.com/*"],
+      "js": ["localStorageScript.js"],
       "run_at": "document_end"
     }
   ]
