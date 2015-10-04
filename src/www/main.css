@@ -7,6 +7,7 @@ body {
   line-height: 20px;
   min-width: 400px;
   min-height: 500px;
+  background-color: #D3D3D3;
 }
 
 .query-subject {
@@ -27,7 +28,6 @@ body {
 	margin-bottom: 7%;
 	vertical-align: middle;
 	height: 100px;
-
 }
 
 .bio {
@@ -48,4 +48,5 @@ body {
 	border-style: solid;
 	border-width: 1px;
 	border-color: lightgrey;
+	background-color: #f2efe8;
 }
