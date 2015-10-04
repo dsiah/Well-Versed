@@ -24,6 +24,8 @@ app.post('/summarize', function(req, res) {
         if(err) {
             return console.warn('ERROR: ' + err);
         } else {
+            data = JSON.stringify(data);
+            console.log('Final Summary = ' + data);
             return(res.end(data));
         }
     });
@@ -43,7 +45,6 @@ app.post('/summarize', function(req, res) {
             if(error) {
                 console.warn(fun(error));
             } else {
-                console.log('Key phrases = ' + JSON.parse(body)['KeyPhrases']);
                 namedEntities(JSON.parse(body)['KeyPhrases'], fun);
             }
         });
@@ -52,11 +53,71 @@ app.post('/summarize', function(req, res) {
     function namedEntities(text, fun) {
         indico.namedEntities(text)
           .then(function(result) {
-              console.log("Named entity recognition = " + JSON.stringify(result));
-              fun(null, JSON.stringify(result));
+              result = result[0];
+              Object.keys(result).forEach(function(key) {
+                  var oldVal = result[key];
+                  result[key] = {'namedEntitities': oldVal};
+              });
+              newsFromNamedEntities(result, fun);
           }).catch(function(err) {
               fun(console.warn(err));
           });
+    }
+
+    function newsFromNamedEntities(namedEntities, fun) {
+        // Hacky way to construct URL
+        var hackedUrl = 'https://api.datamarket.azure.com/Bing/Search/v1/News?' + "Query=" + "%27";
+        Object.keys(namedEntities).forEach(function(entity) {
+            hackedUrl += entity + '%27';
+        });
+        hackedUrl += '&$format=json';
+        console.log('URL = ' + hackedUrl);
+        request({
+            url: hackedUrl, // Url to hit
+            method: 'GET', //Specify the method
+            headers: { //We can define headers too
+                'Authorization': 'Basic ' + btoa('AccountKey:QN98hNEWbua9ag8YDVPodtOHXHoHzPRMLlDnwvWW9lk'),
+                'Accept': 'application/json'
+            }
+        }, function(error, response, body) {
+            if(error) {
+                console.warn(fun(error));
+            } else {
+                body = JSON.parse(body);
+                var newsArticles = [];
+                body['d']['results'].forEach(function(metadata) {
+                    var pruned = {};
+                    pruned['Title'] = metadata['Title'];
+                    pruned['Url'] = metadata['Url'];
+                    newsArticles.push(pruned);
+                });
+                namedEntities['news'] = newsArticles;
+                summaryFromWiki(namedEntities, fun);
+            }
+        });
+    }
+
+    function summaryFromWiki(summary, fun) {
+        keys = [];
+        Object.keys(summary).forEach(function(x) {keys.push(x)});
+        keys.forEach(function(key) {
+            var python = require('child_process').spawn(
+                 'python',
+                 // second argument is array of parameters, e.g.:
+                 ["wiki-summary.py"
+                 , key 
+                 , 2]
+            );
+            var output = "";
+            python.stdout.on('data', function(data){ output += data });
+            python.on('close', function(code){ 
+                if (code !== 0) {  return fun(code) }
+                console.log('output = ' + output);
+                summary[key]['wiki'] = output;
+                console.log('summary = ' + JSON.stringify(summary));
+                return fun(null, summary);
+            });
+        });
     }
 
 app.listen(process.argv[2]);
