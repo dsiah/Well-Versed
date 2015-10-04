@@ -89,19 +89,17 @@ const Main = React.createClass({
             Fill in.
           </CardText>
         </Card>
-        <br/>
-        <Card>
-          <CardTitle subtitle="Title"/>
-          <CardText>
-            Fill in.
-          </CardText>
-          <CardText>
-            Fill in.
-          </CardText>
-          <CardText>
-            Fill in.
-          </CardText>
-        </Card>
+        
+        
+        <List zDepth={1} className="news-list" subheader="Related News"> 
+          <Divider />
+          <ListItem primaryText="News Item 1"></ListItem>
+          <Divider />
+          <ListItem primaryText="News Item 2"></ListItem>
+          <Divider />
+          <ListItem primaryText="News Item 3"></ListItem>
+        </List>
+        
       </div>
     );
   },
