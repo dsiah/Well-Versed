@@ -44,11 +44,14 @@ const Main = React.createClass({
 
     var thus = this;
 
+    chrome.storage.sync.get('well-versed-title', function(title) {
+      thus.setState({title: title});
+    });
+
     chrome.storage.sync.get('well-versed', function(data) {
       var n_data = JSON.parse(data['well-versed']);
-      debugger;
       thus.setState({news: n_data['news'], muiTheme: newMuiTheme})
-    })
+    });
   },
 
   render() {
@@ -71,22 +74,22 @@ const Main = React.createClass({
     }
 
     if (this.state['news']) {
-      debugger;
+      
       return (
       <div style={containerStyle}>
         <Card initiallyExpanded={true}>
           <CardHeader
-            title="Demo Url Based Avatar"
-            subtitle="Subtitle"
+            title="Well-Versed"
+            subtitle="Get informed in seconds"
             avatar="logo.png"
             showExpandableButton={true}/>
           <CardMedia 
-          overlay={<CardTitle title="Title"/>}
+          overlay={<CardTitle />}
           expandable={true}>
             <img src="http://lorempixel.com/600/337/nature/"/>
           </CardMedia>
           <CardText expandable={true}>
-            Fill in.
+            {this.state['title']}
           </CardText>
         </Card>
         

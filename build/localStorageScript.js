@@ -13,8 +13,8 @@ function hitEndpointAndStore(title, endpoint) {
 		
 		localStorage.setItem('well-versed', data);
 		
-		chrome.storage.sync.set({'well-versed': data}, function () {
-        console.log("Just saved", data);
+		chrome.storage.sync.set({'well-versed': data, 'well-versed-title': title}, function () {
+        console.log("Just saved", data, title);
     });
 	});
 }
