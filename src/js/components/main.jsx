@@ -78,7 +78,7 @@ const Main = React.createClass({
           <CardHeader
             title="Demo Url Based Avatar"
             subtitle="Subtitle"
-            avatar="http://lorempixel.com/100/100/nature/"
+            avatar="logo.png"
             showExpandableButton={true}/>
           <CardMedia 
           overlay={<CardTitle title="Title" subtitle="Subtitle"/>}
