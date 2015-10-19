@@ -24,7 +24,7 @@ function backdrop (text) {
     // Get named entities, then hit wiki summary and Bing Image API for each named entity
     var namedEntsPromise = indico.named_entities(text).then(function(namedEnts) {
         backdrop['named_entities'] = namedEnts;
-        return [Object.keys(namedEnts)[0]];
+        return Object.keys(namedEnts);
     }).then(function(entities) {
         var deferred = Q.defer();
         var allPromises = [];
@@ -39,12 +39,12 @@ function backdrop (text) {
         return deferred.promise;
         // allInfo contains lists of {entity -> {images: ..., summary...}}
     }).then(function(allInfo) {
-
         for (var  i = 0; i < allInfo.length; ++i) {
-            var entity = allInfo[i][0];
-            var summary = allInfo[i][1];
-            var images = allInfo[i][2];
-            backdrop[entity] = {'summary': summary, 'images': images};
+            var entity = Object.keys(allInfo[i])[0];
+            backdrop[entity] = {};
+            Object.keys(allInfo[i][entity]).forEach(function (info) {
+                backdrop[entity][info] = allInfo[i][entity][info];
+            });
         }
       }).catch(console.warn);
 
@@ -66,8 +66,9 @@ function backdrop (text) {
 // that entity as a map {entity: {image: ..., summary: ..., etc.}}
 function allInfoForNamedEnt(entity) {
     var deferred = Q.defer();
+    var allInfo = {};
+    allInfo[entity] = {};
     Q.all([bingImages(entity), wikiSummary(entity)]).then(function (info) {
-        var allInfo = {};
         allInfo[entity]['images'] = info[0];
         allInfo[entity]['summary'] = info[1];
         deferred.resolve(allInfo);
@@ -106,10 +107,11 @@ function bingNews(keywords) {
 	var keywords = Object.keys(keywords).slice(0, 2);
     var url = constructBingUrl(keywords, 'News');
     var bingOptions = bingReqOptions(url);
-    
+
     request(bingOptions).then(function(body) {
         var newsArticles = [];
-        for (var i = 0; i < NUM_NEWS_ARTICLES; ++i) {
+        var numArticlesReturned = Object.keys(body['d']['results']).length;
+        for (var i = 0; i < NUM_NEWS_ARTICLES && i < numArticlesReturned; ++i) {
             var result = body['d']['results'][i];
             var title = result['Title'];
             var url = result['Url'];
@@ -161,5 +163,3 @@ function wikiSummary(entity) {
 }
 
 module.exports = backdrop;
-
-backdrop('Donald Trump is a crazy dude who would not visit Brandeis University').then(console.log);
