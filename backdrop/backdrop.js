@@ -21,19 +21,31 @@ function backdrop (text) {
       	backdrop['news'] = news;
       }).catch(console.warn);
 
-    // Get named entities, then hit wiki summary and Bing Image API with first named entity
+    // Get named entities, then hit wiki summary and Bing Image API for each named entity
     var namedEntsPromise = indico.named_entities(text).then(function(namedEnts) {
         backdrop['named_entities'] = namedEnts;
-        return Object.keys(namedEnts)[0];
-    }).then(function(entity) {
+        return [Object.keys(namedEnts)[0]];
+    }).then(function(entities) {
         var deferred = Q.defer();
-        Q.all([wikiSummary(entity), bingImages(entity)]).then(function(allInfo) {
+        var allPromises = [];
+        // Grab wiki-summary and bing images for each entity
+        entities.forEach(function(entity) {
+            allPromises.push(allInfoForNamedEnt(entity))
+        });
+        // Only fulfill promise once all info for all entities is returned
+        Q.all(allPromises).then(function(allInfo) {
             deferred.resolve(allInfo);
         }).catch(deferred.reject);
         return deferred.promise;
+        // allInfo contains lists of {entity -> {images: ..., summary...}}
     }).then(function(allInfo) {
-        backdrop['summary'] = allInfo[0];
-        backdrop['images'] = allInfo[1];
+
+        for (var  i = 0; i < allInfo.length; ++i) {
+            var entity = allInfo[i][0];
+            var summary = allInfo[i][1];
+            var images = allInfo[i][2];
+            backdrop[entity] = {'summary': summary, 'images': images};
+        }
       }).catch(console.warn);
 
     // Get text tags
@@ -49,6 +61,19 @@ function backdrop (text) {
     }).catch(deferred.reject);
     return deferred.promise;
 };
+
+// Takes in an entity and returns all relevant information for
+// that entity as a map {entity: {image: ..., summary: ..., etc.}}
+function allInfoForNamedEnt(entity) {
+    var deferred = Q.defer();
+    Q.all([bingImages(entity), wikiSummary(entity)]).then(function (info) {
+        var allInfo = {};
+        allInfo[entity]['images'] = info[0];
+        allInfo[entity]['summary'] = info[1];
+        deferred.resolve(allInfo);
+    }).catch(deferred.reject);
+    return deferred.promise;
+}
 
 // Returns promise that when fulfilled will return all relevant
 // bing images for the given keyword
@@ -136,3 +161,5 @@ function wikiSummary(entity) {
 }
 
 module.exports = backdrop;
+
+backdrop('Donald Trump is a crazy dude who would not visit Brandeis University').then(console.log);
