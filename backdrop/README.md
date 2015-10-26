@@ -1,11 +1,12 @@
 # Summary
 Text-backdrop is a text-contextualization tool that takes a string and returns some relevant news, images, and wikipedia summaries.
 
-# How to use
+## How to use
 ```javascript
 var backdrop = require('text-backdrop');
 backdrop('Donald Trump is running for president in 2016').then(console.log)
 ```
+## Results
 ```bash
 {
     named_entities: {'Donald Trump': {confidence: ...}}
@@ -18,3 +19,6 @@ backdrop('Donald Trump is running for president in 2016').then(console.log)
     }
 }
 ```
+## Explanation of Results
+The results are a JSON object containing all extracted relevant information. We notice that the tool returns named entities (i.e. people, places, and organizations), categorical tags of the text, keywords from the text, relevant news (given the keywords), and images and a wikipedia summary for each named entity.
+
