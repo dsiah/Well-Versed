@@ -1,5 +1,5 @@
 {
-  "name": "backdrop",
+  "name": "text-backdrop",
   "version": "1.0.0",
   "description": "Module to analyze meaning from text and send back relevant information about the text",
   "main": "backdrop.js",
