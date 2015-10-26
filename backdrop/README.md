@@ -1,5 +1,5 @@
 # Summary
-Text-backdrop is a text-contextualization tool that takes a string and returns some relevant news, images, and wikipedia summaries.
+Text-backdrop is a text-contextualization tool that takes a string and returns some relevant news, images, and wikipedia summaries. This module exports a single function which will take a string and return a promise that (when fulfilled) will return an object with contextual information (described below).
 
 ## How to use
 ```javascript

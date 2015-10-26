@@ -1,6 +1,6 @@
 {
   "name": "text-backdrop",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Module to analyze meaning from text and send back relevant information about the text",
   "main": "backdrop.js",
   "scripts": {
