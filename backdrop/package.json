@@ -2,7 +2,7 @@
   "name": "backdrop",
   "version": "1.0.0",
   "description": "Module to analyze meaning from text and send back relevant information about the text",
-  "main": "keyword-extraction-service.js",
+  "main": "backdrop.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
