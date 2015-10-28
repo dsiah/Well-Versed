@@ -2,6 +2,7 @@
   "name": "well_versed",
   "version": "0.0.0",
   "description": "",
+  "main": "backend.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/dsiah"
