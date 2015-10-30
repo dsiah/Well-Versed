@@ -45,11 +45,10 @@ const Main = React.createClass({
     var thus = this;
 
     chrome.storage.sync.get('well-versed', function(data) {
-
-      var firstkey = Object.keys(data['well-versed'])[0];
-      var title  = data['well-versed'][firstkey].origTitle;
-      var news_cont = data['well-versed'][firstkey].news;
-      var wiki  = data['well-versed'][firstkey].wiki;
+      // var firstkey = Object.keys(data['well-versed']);
+      var title  = data['well-versed']['original text'];
+      var news_cont = data['well-versed'].news;
+      var wiki  = data['well-versed'].wiki;
       thus.setState({news: news_cont, muiTheme: newMuiTheme, title: title, wiki: wiki})
     });
   },
@@ -98,16 +97,16 @@ const Main = React.createClass({
         
         <List zDepth={1} className="news-list" subheader="Related News"> 
           <Divider />
-          <ListItem primaryText={this.state['news'][0].Title} id={0} 
-          onClick={this.transport.bind(this, this.state['news'][0]['Url'])}>
+          <ListItem primaryText={this.state['news'][0].title} id={0} 
+          onClick={this.transport.bind(this, this.state['news'][0]['url'])}>
           </ListItem>
           <Divider />
-          <ListItem primaryText={this.state['news'][1].Title} id={1} 
-          onClick={this.transport.bind(this, this.state['news'][1]['Url'])}>
+          <ListItem primaryText={this.state['news'][1].title} id={1} 
+          onClick={this.transport.bind(this, this.state['news'][1]['url'])}>
           </ListItem>
           <Divider />
-          <ListItem primaryText={this.state['news'][2].Title} id={2} 
-          onClick={this.transport.bind(this, this.state['news'][2]['Url'])}>
+          <ListItem primaryText={this.state['news'][2].title} id={2} 
+          onClick={this.transport.bind(this, this.state['news'][2]['url'])}>
           </ListItem>
         </List>
       </div>)

@@ -8,8 +8,8 @@ function hitEndpointAndStore(title, endpoint) {
 		
 		chrome.storage.sync.set({'well-versed': data, 'well-versed-title': title}, function () {
 			console.log("Just saved", data, title);
-    });
+    	});
 	});
 }
 
-hitEndpointAndStore(document.title, 'http://wellversed.edenzik.com/summarize');
+hitEndpointAndStore(document.title, 'https://well-versed-backend.herokuapp.com/summarize');
